@@ -15,7 +15,7 @@ Type rewardRecursive(Type hour, Type reward)
 	{
 		static_cast<Type>(rewardH * hour)
 	}
-	return static_cast<Type>(rewardR * 2 - 50);
+	return static_cast<Type>(rewardRecursive(Type hour, Type reward));
 }
 
 int main()
