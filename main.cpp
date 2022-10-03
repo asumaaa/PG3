@@ -1,21 +1,32 @@
 #include <stdio.h> 
 
 //働く時間Hを指定して給料を計算する関数
-template<typename Type>
-Type rewardHour(Type hour, Type reward)
+int rewardHour(int hour, int reward)
 {
-	return static_cast<Type>(hour * reward);
+	return hour * reward;
 }
 
-//再帰的な賃金形態の場合、時間を指定して給料を計算する関数
-template<typename Type>
-Type rewardRecursive(Type hour, Type reward)
+//再帰的な賃金形態の場合の時間を指定しての給料を計算
+int rewardRecursive(int hour, int reward)
 {
-	if (hour <= 1)
+	if (hour < 1)
 	{
-		static_cast<Type>(rewardH * hour)
+		return 100;
 	}
-	return static_cast<Type>(rewardRecursive(Type hour, Type reward));
+
+	return rewardRecursive(hour - 1, reward) * 2 - 50;
+}
+
+//再帰的な賃金形態の場合の給料の合計を計算
+int rewardRecursiveSum(int hour,int reward)
+{
+	int rewardTotal = 0;
+	for (int i = 0; i < hour; i++)
+	{
+		rewardTotal += rewardRecursive(i, reward);
+	}
+
+	return rewardTotal;
 }
 
 int main()
@@ -23,8 +34,16 @@ int main()
 	int rewardH = 1072;//時給
 	int rewardR = 100;//再帰的な賃金形態の場合の時給
 
-	printf("%d\n", rewardHour<int>(3, rewardH));
-	printf("%d\n",rewardHour<int>(3, rewardH));
+	for (int i = 0; i < 100; i++)
+	{
+		printf("%d時間働いた場合\n", i);
+		printf("一般的な賃金体態:%d円\n", rewardHour(i, rewardH));
+		printf("再起的な賃金体態:%d円\n\n", rewardRecursiveSum(i, rewardR));
+		if (rewardHour(i, rewardH) < rewardRecursiveSum(i, rewardR))
+		{
+			break;
+		}
+	}
 
 	return 0;
 }
