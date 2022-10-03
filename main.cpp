@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 
 //¬‚³‚¢•û‚Ì”š‚ğ•Ô‚·ŠÖ”Min
 template<typename Type>
@@ -8,16 +10,14 @@ Type Min(Type a, Type b)
 	{
 		return static_cast<Type>(a);
 	}
-	return 
-	{
-		static_cast<Type>(b);
-	}
+	return static_cast<Type>(b);
 }
 
+//charŒ^‚Ìê‡0‚ğ•Ô‚·
 template<>
-char Min<char>(char a,char b)
+char Min(char a,char b)
 {
-	return printf("”š‚Í‘ã“ü‚Å‚«‚Ü‚¹‚ñ");
+	return 0;
 }
 
 int main()
@@ -25,6 +25,10 @@ int main()
 	printf("%d\n", Min<int>(1, 2));
 	printf("%f\n", Min<float>(3, 4));
 	printf("%lf\n", Min<double>(5, 6));
-	printf("%c\n", Min<char>(7, 8));
+	if (Min('a', 'b') == 0)
+	{
+		printf("”šˆÈŠO‚Í“ü—Í‚Å‚«‚Ü‚¹‚ñ\n");
+	}
+
 	return 0;
 }
