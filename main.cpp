@@ -1,50 +1,81 @@
 #include <stdio.h> 
+#include <stdlib.h> 
+#include <time.h> 
+#include <windows.h> 
 
-//働く時間Hを指定して給料を計算する関数
-int rewardHour(int hour, int reward)
-{
-	return hour * reward;
-}
+typedef void (*pFunc)(int*,int*);
 
-//再帰的な賃金形態の場合の時間を指定しての給料を計算
-int rewardRecursive(int hour, int reward)
+//サイコロと予想を判定する関数
+void Judge(int *diceNum ,int* inputNum)
 {
-	if (hour < 1)
+	printf("サイコロの出目は%d:",*diceNum);
+	if (*diceNum % 2 == 0)
 	{
-		return 100;
+		printf("偶数です\n");
+	}
+	else
+	{
+		printf("奇数です\n");
 	}
 
-	return rewardRecursive(hour - 1, reward) * 2 - 50;
+	//1か2が入力されていたら
+	if (*inputNum == 1 || *inputNum == 2)
+	{
+		if (*inputNum == 1)
+		{
+			if (*diceNum % 2 == 0)
+			{
+				printf("はずれ！\n");
+			}
+			else
+			{
+				printf("あたり！\n");
+			}
+		}
+		if (*inputNum == 2)
+		{
+			if (*diceNum % 2 == 1)
+			{
+				printf("はずれ！\n");
+			}
+			else
+			{
+				printf("あたり！\n");
+			}
+		}
+	}
+	//それ以外が入力された場合
+	else
+	{
+		printf("正しく入力してください\n");
+	}
 }
 
-//再帰的な賃金形態の場合の給料の合計を計算
-int rewardRecursiveSum(int hour,int reward)
+//指定した時間待って関数を実行する関数
+void setTimer(pFunc p,int second, int diceNum, int inputNum)
 {
-	int rewardTotal = 0;
-	for (int i = 0; i < hour; i++)
-	{
-		rewardTotal += rewardRecursive(i, reward);
-	}
-
-	return rewardTotal;
+	//指定した時間待つ
+	Sleep(second);
+	
+	p(&diceNum,&inputNum);
 }
 
 int main()
 {
-	int rewardH = 1072;//時給
-	int rewardR = 100;//再帰的な賃金形態の場合の時給
+	//サイコロを生成
+	srand(time(nullptr));
+	int diceNum = rand() % 6 + 1;
 
-	for (int i = 0; i < 100; i++)
-	{
-		printf("%d時間働いた場合\n", i);
-		printf("一般的な賃金体態:%d円\n", rewardHour(i, rewardH));
-		printf("再起的な賃金体態:%d円\n\n", rewardRecursiveSum(i, rewardR));
-		if (rewardHour(i, rewardH) < rewardRecursiveSum(i, rewardR))
-		{
-			printf("%d時間働いた場合再帰的な賃金体態の方が稼げる\n", i);
-			break;
-		}
-	}
+	//ユーザーがサイコロの出目を予想
+	int inputNum = 0;
+	printf("サイコロの出目が奇数か偶数か予想してください\n");
+	printf("奇数の場合:1 偶数の場合:2\n");
+	scanf_s("%d",&inputNum);
+
+	int waitTime = 3000;	//待つ時間（ミリ秒）
+	pFunc p;
+	p = Judge;
+	setTimer(p, waitTime, diceNum,inputNum);
 
 	return 0;
 }
