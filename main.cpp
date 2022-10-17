@@ -41,6 +41,7 @@ int main()
 		printf("再起的な賃金体態:%d円\n\n", rewardRecursiveSum(i, rewardR));
 		if (rewardHour(i, rewardH) < rewardRecursiveSum(i, rewardR))
 		{
+			printf("%d時間働いた場合再帰的な賃金体態の方が稼げる\n", i);
 			break;
 		}
 	}
