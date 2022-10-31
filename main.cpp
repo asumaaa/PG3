@@ -5,12 +5,6 @@
 #include <iostream>
 #include <windows.h> 
 
-class sta
-{
-public:
-
-};
-
 int main()
 {
 	//1970”N‚ÌRèü‚ğ’è‹`
