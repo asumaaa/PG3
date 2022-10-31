@@ -22,17 +22,6 @@ int main()
 	Sleep(waitTime);
 	//奇数偶数を返す関数
 	std::function<int(int)> judge = [=](int i) {return i % 2; };
-	
-	//サイコロが奇数か偶数返す
-	printf("サイコロの出目は%d:", diceNum);
-	if (judge(diceNum) == 0)
-	{
-		printf("偶数です\n");
-	}
-	else
-	{
-		printf("奇数です\n");
-	}
 
 	//当たりか判定する
 	if (inputNum == 1)
