@@ -5,67 +5,119 @@
 #include <iostream>
 #include <windows.h> 
 
-class sta
-{
-public:
+//struct CELL
+//{
+//	int val;
+//	struct CELL* next;
+//};
+//
+////セルを新規作成する関数
+//void create(CELL* cell, int num);
+////セルの一覧を表示する関数
+//void index(CELL* cell);
+//
+//int main()
+//{
+//	CELL head;
+//	head.next = nullptr;
+//
+//	create(&head, 4);
+//	create(&head, 6);
+//
+//	index(&head);
+//
+//	system("pause");
+//
+//	return 0;
+//}
+//
+////セルを新規作成する関数
+//void create(CELL* cell, int num)
+//{
+//	CELL* newCell;
+//	//セルを新規作成
+//	newCell = (CELL*)malloc(sizeof(CELL));
+//	newCell->val = num;
+//	newCell->next = nullptr;
+//
+//	//追加する前の最後尾を検索
+//	while (cell->next != nullptr)
+//	{
+//		cell = cell->next;
+//	}
+//
+//	//最後尾に新規作成したセルのポインタを代入
+//	cell->next = newCell;
+//}
+//
+////セルの一覧を表示する関数
+//void index(CELL* cell)
+//{
+//	int i = 0;
+//	while (cell->next != nullptr)
+//	{
+//		i++;
+//		cell = cell->next;
+//
+//		printf("%d番目のセルの値:%d\n", i,cell->val);
+//	}
+//}
 
+struct CELL
+{
+	char str[20];
+	struct CELL* next;
 };
+
+//セルを新規作成する関数
+void create(CELL* cell, const char* buf);
+//セルの一覧を表示する関数
+void index(CELL* cell);
 
 int main()
 {
-	//1970年の山手線を定義
-	std::list<const char*> station = 
-	{
-		"Tokyo","Yurakucho","Shimbashi","Hamamatsucho",
-		"Tamachi","Shinagawa","Osaki","Gotanda","Meguro",
-		"Shibuya","Harajuku","Yoyogi","Shinjuku",
-		"Shin-Okubo","Takadanobaba","Mejiro","Ikebukuro",
-		"Otsuka","Sugamo","Komagome","Nippori","Uguisudani",
-		"Ueno","Okachimachi","Akihabara","Kanda"
-	};
+	CELL head;
+	head.next = nullptr;
 
-	//1970年の駅名を表示
-	printf("1970年の山手線の駅を東京から内回りで表示\n");
-	for (std::list<const char*>::iterator it = station.begin(); it != station.end(); it++)
-	{
-		std::cout << *it << std::endl;
-	}
+	create(&head, "aiueo");
+	create(&head, "abcde");
 
-	//日暮里の前に西日暮里を追加
-	for (std::list<const char*>::iterator it = station.begin(); it != station.end(); it++)
-	{
-		if (*it == "Nippori")
-		{
-			it = station.insert(it, "Nishi-Nippori");
-			it++;
-		}
-	}
-	
-	//2019年の駅名を追加
-	printf("\n2019年の山手線の駅を東京から内回りで表示\n");
-	for (std::list<const char*>::iterator it = station.begin(); it != station.end(); it++)
-	{
-		std::cout << *it << std::endl;
-	}
-
-	//品川の前に高輪ゲートウェイを追加
-	for (std::list<const char*>::iterator it = station.begin(); it != station.end(); it++)
-	{
-		if (*it == "Shinagawa")
-		{
-			it = station.insert(it, "Takanawa-Gateway");
-			it++;
-		}
-	}
-
-	//2022年の駅名を追加
-	printf("\n2022年の山手線の駅を東京から内回りで表示\n");
-	for (std::list<const char*>::iterator it = station.begin(); it != station.end(); it++)
-	{
-		std::cout << *it << std::endl;
-	}
+	index(&head);
 
 	system("pause");
 
 	return 0;
+}
+
+//セルを新規作成する関数
+void create(CELL* cell, const char* buf)
+{
+	CELL* newCell;
+	//セルを新規作成
+	newCell = (CELL*)malloc(sizeof(CELL));
+
+	strcpy_s(newCell->str, 20, buf);
+	newCell->next = nullptr;
+
+	//追加する前の最後尾を検索
+	while (cell->next != nullptr)
+	{
+		cell = cell->next;
+	}
+
+	//最後尾に新規作成したセルのポインタを代入
+	cell->next = newCell;
+}
+
+//セルの一覧を表示する関数
+void index(CELL* cell)
+{
+	int i = 0;
+	while (cell->next != nullptr)
+	{
+		i++;
+		cell = cell->next;
+
+		printf("%d番目のセルの名前:%s\n", i, cell->str);
+	}
 }
