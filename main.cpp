@@ -5,119 +5,65 @@
 #include <iostream>
 #include <windows.h> 
 
-//struct CELL
-//{
-//	int val;
-//	struct CELL* next;
-//};
-//
-////セルを新規作成する関数
-//void create(CELL* cell, int num);
-////セルの一覧を表示する関数
-//void index(CELL* cell);
-//
-//int main()
-//{
-//	CELL head;
-//	head.next = nullptr;
-//
-//	create(&head, 4);
-//	create(&head, 6);
-//
-//	index(&head);
-//
-//	system("pause");
-//
-//	return 0;
-//}
-//
-////セルを新規作成する関数
-//void create(CELL* cell, int num)
-//{
-//	CELL* newCell;
-//	//セルを新規作成
-//	newCell = (CELL*)malloc(sizeof(CELL));
-//	newCell->val = num;
-//	newCell->next = nullptr;
-//
-//	//追加する前の最後尾を検索
-//	while (cell->next != nullptr)
-//	{
-//		cell = cell->next;
-//	}
-//
-//	//最後尾に新規作成したセルのポインタを代入
-//	cell->next = newCell;
-//}
-//
-////セルの一覧を表示する関数
-//void index(CELL* cell)
-//{
-//	int i = 0;
-//	while (cell->next != nullptr)
-//	{
-//		i++;
-//		cell = cell->next;
-//
-//		printf("%d番目のセルの値:%d\n", i,cell->val);
-//	}
-//}
-
-struct CELL
+//図書カード構造体
+struct LibraryCard
 {
-	char str[20];
-	struct CELL* next;
+	char name[20];		//氏名
+	int lendDay;	//貸出日
+	int returnDay;	//返却日
+	struct LibraryCard* next;
 };
 
-//セルを新規作成する関数
-void create(CELL* cell, const char* buf);
-//セルの一覧を表示する関数
-void index(CELL* cell);
+//図書カードの名前、貸出返却日を保存する関数
+void create(LibraryCard* libraryCard, const char* buf,int lend,int re);
+//図書カードの一覧を表示する関数
+void index(LibraryCard* libraryCard);
 
 int main()
 {
-	CELL head;
-	head.next = nullptr;
+	LibraryCard user;
+	user.next = nullptr;
 
-	create(&head, "aiueo");
-	create(&head, "abcde");
+	create(&user, "tanaka",20220104, 20220114);
+	create(&user, "yamada", 20220204, 20220214);
 
-	index(&head);
+	index(&user);
 
 	system("pause");
 
 	return 0;
 }
 
-//セルを新規作成する関数
-void create(CELL* cell, const char* buf)
+//図書カードの名前、貸出返却日を保存する関数
+void create(LibraryCard* libraryCard, const char* buf, int lend, int re)
 {
-	CELL* newCell;
-	//セルを新規作成
-	newCell = (CELL*)malloc(sizeof(CELL));
+	LibraryCard* newLibraryCard;
+	//図書カードを新規作成
+	newLibraryCard = (LibraryCard*)malloc(sizeof(LibraryCard));
 
-	strcpy_s(newCell->str, 20, buf);
-	newCell->next = nullptr;
+	strcpy_s(newLibraryCard->name, 20, buf);
+	newLibraryCard->lendDay = lend;
+	newLibraryCard->returnDay = re;
+	newLibraryCard->next = nullptr;
 
 	//追加する前の最後尾を検索
-	while (cell->next != nullptr)
+	while (libraryCard->next != nullptr)
 	{
-		cell = cell->next;
+		libraryCard = libraryCard->next;
 	}
 
-	//最後尾に新規作成したセルのポインタを代入
-	cell->next = newCell;
+	//最後尾に新規作成した図書カードのポインタを代入
+	libraryCard->next = newLibraryCard;
 }
 
-//セルの一覧を表示する関数
-void index(CELL* cell)
+//図書カードの一覧を表示する関数
+void index(LibraryCard* libraryCard)
 {
-	int i = 0;
-	while (cell->next != nullptr)
+	while (libraryCard->next != nullptr)
 	{
-		i++;
-		cell = cell->next;
+		libraryCard = libraryCard->next;
 
-		printf("%d番目のセルの名前:%s\n", i, cell->str);
+		printf("氏名:%s 貸出日:%d 返却日:%d\n",
+			libraryCard->name, libraryCard->lendDay, libraryCard->returnDay);
 	}
 }
