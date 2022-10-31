@@ -32,33 +32,5 @@ int main()
 	Sleep(waitTime);
 	judge();
 
-	////当たりか判定する
-	//if (inputNum == 1)
-	//{
-	//	if (judge(diceNum) == 0)
-	//	{
-	//		printf("はずれ！\n");
-	//	}
-	//	else
-	//	{
-	//		printf("あたり！\n");
-	//	}
-	//}
-	//else if (inputNum == 2)
-	//{
-	//	if (judge(diceNum) == 1)
-	//	{
-	//		printf("はずれ！\n");
-	//	}
-	//	else
-	//	{
-	//		printf("あたり！\n");
-	//	}
-	//}
-	//else
-	//{
-	//	printf("正しく入力してください\n");
-	//}
-
 	return 0;
 }
