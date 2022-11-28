@@ -15,7 +15,7 @@ int main()
 	printf("奇数の場合:0 偶数の場合:1\n");
 	scanf_s("%d",&inputNum);
 
-	int waitTime = 3000;	//待つ時間（ミリ秒）
+	int waitTime = 3;	//待つ時間
 
 	//奇数偶数を返す関数
 	std::function<void()> judge = [=]()
@@ -28,8 +28,11 @@ int main()
 		else{printf("正しく入力してください\n");}
 	};
 
+	//タイムアウト関数
+	std::function<void(std::function<void()>, int)> setTimeOut = [](std::function<void()> fx, int sec) {fx(), Sleep(sec * 1000); };
+
 	//指定した時間待つ
-	Sleep(waitTime);
+	setTimeOut(judge, waitTime);
 	judge();
 
 	return 0;
