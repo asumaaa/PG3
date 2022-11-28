@@ -60,6 +60,7 @@ int main()
 	printf("高輪ゲートウェイ追加前の京浜東北線の駅を下りで表示\n");
 	//表示
 	IndexReturn(station);
+	printf("\n");
 
 	//高輪ゲートウェイ追加後
 	stationVal += 1;
