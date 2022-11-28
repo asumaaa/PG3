@@ -6,64 +6,144 @@
 #include <windows.h> 
 
 //図書カード構造体
-struct LibraryCard
+struct Station
 {
+	int val;
 	char name[20];		//氏名
-	int lendDay;	//貸出日
-	int returnDay;	//返却日
-	struct LibraryCard* next;
+	struct Station* prev;
+	struct Station* next;
 };
 
-//図書カードの名前、貸出返却日を保存する関数
-void create(LibraryCard* libraryCard, const char* buf,int lend,int re);
-//図書カードの一覧を表示する関数
-void index(LibraryCard* libraryCard);
+void Create(Station* currentStation,const char *name);
+void Index(Station* Station);
+void IndexReturn(Station* Station);
+Station *GetInsertListAddress(Station* Station,int iterator);
 
 int main()
 {
-	LibraryCard user;
-	user.next = nullptr;
+	//駅名定義
+	const char* KeihinTohokuStation[] =
+	{
+		"Omiya","Saitama-Shintoshin","Yono","Kita-Urawa","Urawa","Minami-Urawa",
+		"Warabi","Nishi-Kawaguchi","Kawaguchi","Akabane","Higashi-Jujo","Oji",
+		"Kami-Nakazato","Tabata","Nishi-Nippori","Nippori","Uguisudani","Ueno",
+		"Okachimachi","Akihabara","Kanda","Tokyo","Yurakucho","Shimbashi",
+		"Hamamatsucho","Tamachi","Shinagawa","Oimachi","Omori","Kamata",
+		"Kawasaki","Tsurumi","Shin-Koyasu","Higashi-Kanagawa","Yokohama",
+	};
 
-	create(&user, "tanaka",20220104, 20220114);
-	create(&user, "yamada", 20220204, 20220214);
+	int iterator = 0;	
+	int stationVal = 35;
+	Station *station;
 
-	index(&user);
+	//先頭のアドレス
+	Station headStation;
+	headStation.next = nullptr;
+	headStation.prev = nullptr;
+
+	//高輪ゲートウェイ追加前の駅を代入
+	for (int i = 0; i < stationVal; i++)
+	{
+		station = GetInsertListAddress(&headStation, i);
+		Create(station, KeihinTohokuStation[i]);
+	}
+
+	//アドレスを戻す
+	station = GetInsertListAddress(&headStation, 0);
+	printf("高輪ゲートウェイ追加前の京浜東北線の駅を上りで表示\n");
+	//表示
+	Index(station);
+	printf("\n");
+
+	//アドレスを横浜に合わせる
+	station = GetInsertListAddress(&headStation, stationVal);
+	printf("高輪ゲートウェイ追加前の京浜東北線の駅を下りで表示\n");
+	//表示
+	IndexReturn(station);
+
+	//高輪ゲートウェイ追加後
+	stationVal += 1;
+	//駅代入
+	for (int i = 0; i < stationVal; i++)
+	{
+		station = GetInsertListAddress(&headStation, i);
+		if (i < 27)
+		{
+			Create(station, KeihinTohokuStation[i]);
+		}
+		else if (i == 27)
+		{
+			Create(station, "TakanawaGateway");
+		}
+		else
+		{
+			Create(station, KeihinTohokuStation[i - 1]);
+		}
+	}
+
+	//アドレスを戻す
+	station = GetInsertListAddress(&headStation, 0);
+	printf("高輪ゲートウェイ追加後の京浜東北線の駅を上りで表示\n");
+	//表示
+	Index(station);
+	printf("\n");
+
+	//アドレスを横浜に合わせる
+	station = GetInsertListAddress(&headStation, stationVal);
+	printf("高輪ゲートウェイ追加後の京浜東北線の駅を下りで表示\n");
+	//表示
+	IndexReturn(station);
 
 	system("pause");
-
 	return 0;
 }
 
-//図書カードの名前、貸出返却日を保存する関数
-void create(LibraryCard* libraryCard, const char* buf, int lend, int re)
+void Create(Station* currentStation, const char* name)
 {
-	LibraryCard* newLibraryCard;
-	//図書カードを新規作成
-	newLibraryCard = (LibraryCard*)malloc(sizeof(LibraryCard));
+	Station* newStation;
+	newStation = (Station*)malloc(sizeof(Station));
 
-	strcpy_s(newLibraryCard->name, 20, buf);
-	newLibraryCard->lendDay = lend;
-	newLibraryCard->returnDay = re;
-	newLibraryCard->next = nullptr;
+	strcpy_s(newStation->name, 20, name);
+	newStation->prev = currentStation;
+	newStation->next = currentStation->next;
 
-	//追加する前の最後尾を検索
-	while (libraryCard->next != nullptr)
+	if (currentStation->next)
 	{
-		libraryCard = libraryCard->next;
+		Station* nextStation = currentStation->next;
+		nextStation->prev = newStation;
 	}
-
-	//最後尾に新規作成した図書カードのポインタを代入
-	libraryCard->next = newLibraryCard;
+	currentStation->next = newStation;
 }
 
-//図書カードの一覧を表示する関数
-void index(LibraryCard* libraryCard)
+void Index(Station* Station)
 {
-	while (libraryCard->next != nullptr)
+	while (Station->next != nullptr)
 	{
-		libraryCard = libraryCard->next;
-
-		printf("氏名:%s 貸出日:%d 返却日:%d\n",
-			libraryCard->name, libraryCard->lendDay, libraryCard->returnDay);
+		Station = Station->next;
+		printf("%s\n", Station->name);
 	}
+}
+void IndexReturn(Station* Station)
+{
+	while (Station->prev != nullptr)
+	{
+		printf("%s\n", Station->name);
+		Station = Station->prev;
+	}
+}
+
+Station *GetInsertListAddress(Station* Station, int iterator)
+{
+	for (int i = 0; i < iterator; i++)
+	{
+		if (Station->next)
+		{
+			Station = Station->next;
+		}
+		else
+		{
+			break;
+		}
+	}
+	return Station;
 }
