@@ -37,7 +37,7 @@ int main()
 	}
 
 	std::sort(students.begin(), students.end());
-
+	 
 
 	//逐次実行
 	for_each(std::begin(students), std::end(students), [](std::string str) {std::cout << str << std::endl; });
