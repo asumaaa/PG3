@@ -19,11 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerBullet.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
