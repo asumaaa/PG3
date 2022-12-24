@@ -1,5 +1,5 @@
 #include "DxLib.h"
-#include "SceneManager.h"
+#include "Enemy.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine, int nCmdShow)
@@ -10,6 +10,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	const int WindowWidth = 1024;
 	const int WindowHeight = 576; 
+	//敵
+	Enemy* enemy = new Enemy(100, 100);
 
 	ChangeWindowMode(true);
 	SetGraphMode(WindowWidth, WindowHeight, 32);
@@ -17,50 +19,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	if (DxLib_Init() == -1) return -1;
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//インスタンスを取得
-	SceneManager* SceneManager = nullptr;
-	SceneManager = SceneManager::GetInstance();
-
-	//シーン
-	SceneManager->SetScene(Title);
-
 	//ゲームループ
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
 	{
 		GetHitKeyStateAll(key);
 		ClearDrawScreen();
 
-		//スペースのトリガーキーでシーンチェンジ
-		if (key[KEY_INPUT_SPACE] == 1 && oldKey[KEY_INPUT_SPACE] == 0)
-		{
-			if (SceneManager->GetScene() == Title) {
-				SceneManager->ChangeScene(NewGame);
-			}
-			else if (SceneManager->GetScene() == NewGame) {
-				SceneManager->ChangeScene(GamePlay);
-			}
-			else if (SceneManager->GetScene() == GamePlay) {
-				SceneManager->ChangeScene(NewClear);
-			}
-			else if (SceneManager->GetScene() == NewClear) {
-				SceneManager->ChangeScene(Title);
-			}
-		}
+		//敵の更新
+		enemy->Update();
 
-		//シーンによって色チェンジ
-		if (SceneManager->GetScene() == Title)SetBackgroundColor(125, 0, 0);
-		if (SceneManager->GetScene() == NewGame)SetBackgroundColor(0, 125, 0);
-		if (SceneManager->GetScene() == GamePlay)SetBackgroundColor(0, 0, 125);
-		if (SceneManager->GetScene() == NewClear)SetBackgroundColor(0, 0, 0);
-
-		//文字
-		DrawFormatString(0, 0, 0xffffff, "PushSpace");
-		DrawFormatString(0, 20, 0xffffff, "Scene:%d", SceneManager->GetScene());
+		//敵の描画
+		enemy->Draw();
 
 		//oldkeyを取得
 		memcpy(oldKey, key, sizeof(key));
 		ScreenFlip();
 	}
+	delete enemy;
+
 	DxLib_End();
 	return 0;
 }
