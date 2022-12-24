@@ -1,34 +1,39 @@
 #include <stdio.h>
 #include <string.h>
 
-
-//小さい方の数字を返す関数Min
-template<typename Type>
-Type Min(Type a, Type b)
+template<typename Type1, typename Type2>
+class Num
 {
-	if (a <= b)
-	{
-		return static_cast<Type>(a);
-	}
-	return static_cast<Type>(b);
-}
-
-//char型の場合0を返す
-template<>
-char Min(char a,char b)
-{
-	return 0;
-}
+public: //メンバ変数
+	Type1 a;
+	Type2 b;
+public: //メンバ関数
+	//コンストラクタ
+	Num(Type1 a, Type2 b) { Num::a = a; Num::b = b;};
+	//小さい値を返す関数
+	Type1 Min() { return (a < b) ? a : b; };
+};
 
 int main()
 {
-	printf("%d\n", Min<int>(1, 2));
-	printf("%f\n", Min<float>(3, 4));
-	printf("%lf\n", Min<double>(5, 6));
-	if (Min('a', 'b') == 0)
-	{
-		printf("数字以外は入力できません\n");
-	}
+	//int<float
+	Num<int, float> num1(2, 5);
+	printf("%d\n", num1.Min());
+	//int<double
+	Num<int, float> num2(2, 5);
+	printf("%d\n", num2.Min());
+	//int>float
+	Num<float, int> num3(2, 5);
+	printf("%f\n", num3.Min());
+	//int<double
+	Num<double, int> num4(2, 5);
+	printf("%lf\n", num4.Min());
+	//float<double
+	Num<float, double> num5(2, 5);
+	printf("%f\n", num5.Min());
+	//double<float
+	Num<double, float> num6(2, 5);
+	printf("%lf\n", num6.Min());
 
 	return 0;
 }
