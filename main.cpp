@@ -1,34 +1,84 @@
 #include <stdio.h>
-#include <string.h>
+#include <list>
+#include <memory>
 
-
-//小さい方の数字を返す関数Min
-template<typename Type>
-Type Min(Type a, Type b)
+//オタククラス
+class Otaku
 {
-	if (a <= b)
-	{
-		return static_cast<Type>(a);
-	}
-	return static_cast<Type>(b);
-}
+public://メンバ関数
+	//攻撃
+	virtual void Attack();
+};
 
-//char型の場合0を返す
-template<>
-char Min(char a,char b)
+//普通のオタククラス
+class NormalOtaku : public Otaku
 {
-	return 0;
-}
+public://メンバ関数
+	//攻撃
+	void Attack() override;
+};
+
+//イキリオタククラス
+class IkiriOtaku : public Otaku
+{
+public://メンバ関数
+	//攻撃
+	void Attack() override;
+};
+
+//陰キャオタククラス
+class InkyaOtaku : public Otaku
+{
+public://メンバ関数
+	//攻撃
+	void Attack() override;
+};
 
 int main()
 {
-	printf("%d\n", Min<int>(1, 2));
-	printf("%f\n", Min<float>(3, 4));
-	printf("%lf\n", Min<double>(5, 6));
-	if (Min('a', 'b') == 0)
+	//オタク
+	std::list<std::unique_ptr<Otaku>>otakus;
+
+	//1人目を普通のオタクにする
 	{
-		printf("数字以外は入力できません\n");
+		std::unique_ptr<NormalOtaku> newOtaku = std::make_unique<NormalOtaku>();
+		otakus.push_back(std::move(newOtaku));
+	}
+	//2人目をイキリオタクにする
+	{
+		std::unique_ptr<IkiriOtaku> newOtaku = std::make_unique<IkiriOtaku>();
+		otakus.push_back(std::move(newOtaku));
+	}
+	//3人目を陰キャオタクにする
+	{
+		std::unique_ptr<InkyaOtaku> newOtaku = std::make_unique<InkyaOtaku>();
+		otakus.push_back(std::move(newOtaku));
+	}
+
+	//オタク達が攻撃する
+	for (std::unique_ptr<Otaku>& otaku : otakus)
+	{
+		otaku->Attack();
 	}
 
 	return 0;
+}
+
+void Otaku::Attack()
+{
+}
+
+void NormalOtaku::Attack()
+{
+	printf("普通のオタクの饒舌早口アタック\n");
+}
+
+void IkiriOtaku::Attack()
+{
+	printf("イキリオタクのニチャニチャアタック\n");
+}
+
+void InkyaOtaku::Attack()
+{
+	printf("陰キャオタクは音ゲーをしている\n");
 }
