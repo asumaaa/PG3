@@ -2,83 +2,52 @@
 #include <list>
 #include <memory>
 
-//オタククラス
-class Otaku
+#define PI 3.14159265358;
+
+class IShape
 {
 public://メンバ関数
-	//攻撃
-	virtual void Attack();
+	//コンストラクタ、デストラクタ
+	IShape(){};
+	~IShape(){};
+	virtual float size() = 0;
+	virtual void draw() = 0;
 };
 
-//普通のオタククラス
-class NormalOtaku : public Otaku
+class Circle : public IShape
 {
 public://メンバ関数
-	//攻撃
-	void Attack() override;
+	Circle(float r) { Circle::r = r; }
+	~Circle(){};
+	float size() override { return r * r * PI; };
+	void draw() override { printf("この円の面積は%f\n", size()); }
+private:
+	//半径
+	float r;
 };
 
-//イキリオタククラス
-class IkiriOtaku : public Otaku
+class Rectangle : public IShape
 {
 public://メンバ関数
-	//攻撃
-	void Attack() override;
-};
-
-//陰キャオタククラス
-class InkyaOtaku : public Otaku
-{
-public://メンバ関数
-	//攻撃
-	void Attack() override;
+	Rectangle(float x, float y) { Rectangle::x = x; Rectangle::y = y; }
+	~Rectangle() {};
+	float size() override { return x * y; };
+	void draw() override { printf("この矩形の面積は%f\n", size()); }
+private:
+	//横と縦の長さ
+	float x,y;
 };
 
 int main()
 {
-	//オタク
-	std::list<std::unique_ptr<Otaku>>otakus;
 
-	//1人目を普通のオタクにする
-	{
-		std::unique_ptr<NormalOtaku> newOtaku = std::make_unique<NormalOtaku>();
-		otakus.push_back(std::move(newOtaku));
-	}
-	//2人目をイキリオタクにする
-	{
-		std::unique_ptr<IkiriOtaku> newOtaku = std::make_unique<IkiriOtaku>();
-		otakus.push_back(std::move(newOtaku));
-	}
-	//3人目を陰キャオタクにする
-	{
-		std::unique_ptr<InkyaOtaku> newOtaku = std::make_unique<InkyaOtaku>();
-		otakus.push_back(std::move(newOtaku));
-	}
+	std::unique_ptr<Circle>circle = std::make_unique<Circle>(4);
+	std::unique_ptr<Rectangle>rectangle = std::make_unique<Rectangle>(4,5);
 
-	//オタク達が攻撃する
-	for (std::unique_ptr<Otaku>& otaku : otakus)
-	{
-		otaku->Attack();
-	}
+	circle->draw();
+	rectangle->draw();
+
+	system("pause");
 
 	return 0;
-}
-
-void Otaku::Attack()
-{
-}
-
-void NormalOtaku::Attack()
-{
-	printf("普通のオタクの饒舌早口アタック\n");
-}
-
-void IkiriOtaku::Attack()
-{
-	printf("イキリオタクのニチャニチャアタック\n");
-}
-
-void InkyaOtaku::Attack()
-{
-	printf("陰キャオタクは音ゲーをしている\n");
 }
