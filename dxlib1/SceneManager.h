@@ -8,12 +8,16 @@ static enum Scene
 	NewClear,
 };
 
-class SceneManager
+class SceneManager final
 {
 private:
 	SceneManager();
 	~SceneManager();
 public:
+	//コピーコンストラクタ無効
+	SceneManager(const SceneManager& obj) = delete;
+	//代入演算子無効
+	SceneManager& operator=(const SceneManager& obj) = delete;
 	static SceneManager* GetInstance();
 	void ChangeScene(Scene nextScene);
 	Scene GetScene() { return scene_; };
